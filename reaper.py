@@ -5,7 +5,6 @@
 
 import sys
 import time
-import argparse
 import urllib3
 import requests
 import concurrent.futures
@@ -26,20 +25,21 @@ def show_skull():
     """Clears screen and displays the Reaper Skull."""
     sys.stdout.write("\033[H\033[J")
     
-    skull = f"""{Fore.RED}
+    # Using rf-string (raw f-string) to prevent backslash escaping issues
+    skull = rf"""{Fore.RED}
                  ______
               .-"      "-.
-             /            \\
+             /            \
             |              |
             |,  .-.  .-.  ,|
-            | )(_o/  \\o_)( |
-            |/     /\\     \\|
+            | )(_o/  \o_)( |
+            |/     /\     \|
   {Fore.WHITE}(@_ {Fore.RED}|     (_^_)     | {Fore.WHITE}_@)
-    {Fore.WHITE}\\ \\{Fore.RED}"""\\   ^^   /"""{Fore.WHITE}/ /
-     {Fore.WHITE}\\ \\{Fore.RED}  \\______/  {Fore.WHITE}/ /
-      {Fore.WHITE}\\ \\{Fore.RED}          {Fore.WHITE}/ /
-       {Fore.WHITE}\\ \\{Fore.RED}________{Fore.WHITE}/ /
-        {Fore.WHITE}\\__________/
+    {Fore.WHITE}\ \{Fore.RED}"""\   ^^   /"""{Fore.WHITE}/ /
+     {Fore.WHITE}\ \{Fore.RED}  \______/  {Fore.WHITE}/ /
+      {Fore.WHITE}\ \{Fore.RED}          {Fore.WHITE}/ /
+       {Fore.WHITE}\ \{Fore.RED}________{Fore.WHITE}/ /
+        {Fore.WHITE}\__________/
 {Style.RESET_ALL}
     """
     print(skull)
